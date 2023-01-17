@@ -1,54 +1,60 @@
-with open("books/frankenstein.txt") as f:
-    file_contents = f.read()
-#print(file_contents)
-#words = len(file_contents.split())
-words = file_contents.split()
-word = file_contents
-print("--- Begin report of books/frankenstein.txt ---")
-listedtxt= word.lower()
-sortedtxt = list(listedtxt)
-txt = sorted(sortedtxt)
-#for letter in txt:
-print("The 'e' character was found ",txt.count('e'), " times")
-print("The 't' character was found ",txt.count('t'), " times")
-print("The 'a' character was found ",txt.count('a'), " times")
-print("The 'o' character was found ",txt.count('o'), " times")
-print("The 'i' character was found ",txt.count('i'), " times")
-print("The 'n' character was found ",txt.count('n'), " times")
-print("The 's' character was found ",txt.count('s'), " times")
-print("The 'r' character was found ",txt.count('r'), " times")
-print("The 'h' character was found ",txt.count('h'), " times")
-print("The 'd' character was found ",txt.count('d'), " times")
-print("The 'l' character was found ",txt.count('l'), " times")
-print("The 'm' character was found ",txt.count('m'), " times")
-print("The 'u' character was found ",txt.count('u'), " times")
-print("The 'c' character was found ",txt.count('c'), " times")
+book_path = "books/frankenstein.txt"
 
 
-#letter_count = {}
-#for letter in word:
-#    if letter.isalpha():
-#        letter_count[letter] += 1
-#    else:
-#        letter_count[letter] = 1
-#print(letter_count)
-            
+def main():
+    text = get_book_text(book_path)
+    num_words = get_num_words(text)
+    chars_dict = get_chars_dict(text)
+    chars_sorted_list = chars_dict_to_sorted_list(chars_dict)
+
+    print(f"--- Begin report of {book_path} ---")
+    print(f"{num_words} words found in the document")
+    print()
+
+    for item in chars_sorted_list:
+        if not item["char"].isalpha():
+            continue
+        print(f"The '{item['char']}' character was found {item['num']} times")
+
+    print("--- End report ---")
 
 
+def get_num_words(text):
+    words = text.split()
+    return len(words)
 
 
+def sort_on(d):
+    return d["num"]
 
 
+def chars_dict_to_sorted_list(num_chars_dict):
+    sorted_list = []
+    for ch in num_chars_dict:
+        sorted_list.append({"char": ch, "num": num_chars_dict[ch]})
+    sorted_list.sort(reverse=True, key=sort_on)
+    return sorted_list
 
 
+def get_chars_dict(text):
+    chars = {}
+    for c in text:
+        lowered = c.lower()
+        if lowered in chars:
+            chars[lowered] += 1
+        else:
+            chars[lowered] = 1
+    return chars
 
 
+def get_character_sums(text):
+    words = text.split()
+    return len(words)
 
 
+def get_book_text(path):
+    with open(book_path) as f:
+        return f.read()
 
-#print(list(word).sort())
-#chars = word.count("p")
-#print("amount of p: ", word.lower().count("p"))
-#print(words.count('p'))
-# "words".lower()
-#print([*words].count('p'))
+
+main()
